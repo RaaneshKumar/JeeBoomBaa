@@ -15,21 +15,36 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem Header="Save" Click="Save_Click"/>
+                <MenuItem Header="Save As" >
+                    <MenuItem Header="Text Document" Click="SaveAsText_Click"/>
+                    <MenuItem Header="Binary file" Click="SaveAsBin_Click"/>
+                </MenuItem>
+                <MenuItem Header="Open" >
+                    <MenuItem Header="Text Document" Click="LoadAsText_Click"/>
+                    <MenuItem Header="Binary file" Click="LoadAsBin_Click"/>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem Header="Undo" Click="Undo_Click"/>
-                <MenuItem Header="Redo" Click="Redo_Click"/>
                 <MenuItem Header="Clear" Click="Clear_Click"/>
             </MenuItem>
         </Menu>
         <StackPanel  Orientation="Horizontal" Grid.Row="1" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
                     Width="120" Height="30">
+            <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Undo_Click">
+                <Button.ToolTip>Undo</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\undo.jpg" Height="20"/>
+            </Button>
             <Button Background="White" HorizontalAlignment="Left"  Width="30" Height="30" Click="Eraser_Click">
-                <Image Source="C:\Users\rajakumarra\Raana\JeeBoomBaa\R.png"/>
+                <Button.ToolTip>Eraser</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\R.png"/>
             </Button>
             <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Colors_Click">
-                <Image Source="C:\Users\rajakumarra\Raana\JeeBoomBaa\colors.png"/>
+                <Button.ToolTip>Color</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\colors.png"/>
+            </Button>
+            <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Redo_Click">
+                <Button.ToolTip>Redo</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\redo.jpg" Height = "20"/>
             </Button>
         </StackPanel>
     </Grid>

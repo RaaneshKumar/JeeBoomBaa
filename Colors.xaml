@@ -9,14 +9,21 @@
     <Grid>
         <StackPanel  Orientation="Horizontal" Grid.Row="1" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
             Width="120" Height="30">
-            <Button Background="White" HorizontalAlignment="Left"  Width="30" Height="30" Click="Red_Click">
-                <Image Source="C:\Users\rajakumarra\Raana\JeeBoomBaa\red.jpg"/>
+            <Button Background="White" HorizontalAlignment="Left"  Width="30" Height="30" Click="White_Click">
+                <Button.ToolTip>White</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\white.jpg"/>
             </Button>
-            <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Green_Click">
-                <Image Source="C:\Users\rajakumarra\Raana\JeeBoomBaa\green.jpg" Height="21"/>
+            <Button Background="White" Width="30" Height="30" Click="Red_Click">
+                <Button.ToolTip>Red</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\red.jpg"/>
             </Button>
-            <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Yellow_Click">
-                <Image Source="C:\Users\rajakumarra\Raana\JeeBoomBaa\yellow.jpg" Height="17"/>
+            <Button Background="White" Width="30" Height="30" Click="Green_Click">
+                <Button.ToolTip>Green</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\green.jpg" Height="21"/>
+            </Button>
+            <Button Background="White" Width="30" Height="30" Click="Yellow_Click">
+                <Button.ToolTip>Yellow</Button.ToolTip>
+                <Image Source="W:\JeeBoomBaa\Icons\yellow.jpg" Height="17"/>
             </Button>
         </StackPanel>
     </Grid>

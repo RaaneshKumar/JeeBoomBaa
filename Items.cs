@@ -28,11 +28,7 @@ namespace JeeBoomBaa {
       double mY;
    }
    public class MyLine : MyDrawing {
-      public Brush Color { 
-         get => mColor ; 
-         set => mColor = value;
-      }
-      Brush mColor = Brushes.White; 
+      public Brush Color { get; set; }
       public double Thickness { get; set; }
 
       public List<MyPoint> Points = new ();

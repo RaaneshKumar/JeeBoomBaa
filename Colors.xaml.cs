@@ -22,18 +22,23 @@ namespace JeeBoomBaa {
          InitializeComponent ();
       }
       public CustomCanvas OwnerCanvas => ((MainWindow)Owner).MyCanvas;
-      private void Red_Click (object sender, RoutedEventArgs e) {
+      void Red_Click (object sender, RoutedEventArgs e) {
          OwnerCanvas.EnableColor (Red);
          Close ();
       }
 
-      private void Green_Click (object sender, RoutedEventArgs e) {
+      void Green_Click (object sender, RoutedEventArgs e) {
          OwnerCanvas.EnableColor (Green);
          Close ();
       }
 
-      private void Yellow_Click (object sender, RoutedEventArgs e) {
+      void Yellow_Click (object sender, RoutedEventArgs e) {
          OwnerCanvas.EnableColor (Yellow);
+         Close ();
+      }
+
+      void White_Click (object sender, RoutedEventArgs e) {
+         OwnerCanvas.EnableColor (White);
          Close ();
       }
    }
