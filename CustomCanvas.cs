@@ -115,6 +115,7 @@ public partial class CustomCanvas : Canvas {
    }
 
    public void LoadAsText () {
+      mDrawings.Clear (); mRedoItems.Clear (); mClearUndo.Clear ();
       OpenFileDialog loadFile = new () {
          Filter = "Text Document (*.txt)|*.txt|All (*.*)|*"
       };
@@ -161,11 +162,12 @@ public partial class CustomCanvas : Canvas {
    }
 
    public void LoadAsBin () {
+      mDrawings.Clear (); mRedoItems.Clear (); mClearUndo.Clear ();
       OpenFileDialog loadFile = new () {
          Filter = "Binary Document (*.bin)|*.bin|All (*.*)|*"
       };
       if (loadFile.ShowDialog () == true) {
-         using (BinaryReader br = new (File.Open(loadFile.FileName, FileMode.Open))) {
+         using (BinaryReader br = new (File.Open (loadFile.FileName, FileMode.Open))) {
             var drawingCount = br.ReadInt32 ();
             for (int i = 0; i < drawingCount; i++) {
                MyLine scribble = new ();
@@ -175,13 +177,14 @@ public partial class CustomCanvas : Canvas {
                var b = br.ReadByte ();
                scribble.Color = new SolidColorBrush (Color.FromArgb (a, r, g, b));
                var pointCount = br.ReadInt32 ();
-               for (int j = 0; j < pointCount; j++) 
+               for (int j = 0; j < pointCount; j++)
                   scribble.Points.Add (new (br.ReadDouble (), br.ReadDouble ()));
                mDrawings.Add (scribble);
             }
          }
       }
       InvalidateVisual ();
+      //mDrawings.Clear ();
    }
 }
 public enum EColor { White, Red, Green, Yellow }
