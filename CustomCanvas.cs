@@ -13,10 +13,21 @@ using System.IO;
 
 namespace JeeBoomBaa;
 public partial class CustomCanvas : Canvas {
+   MyScribble mScribble = new ();
+   MyRect mRect = new ();
    MyLine mLine = new ();
    List<MyDrawing> mDrawings = new ();
    Stack<MyDrawing> mRedoItems = new ();
    Queue<MyDrawing> mClearUndo = new ();
+
+   public void ScribbleOn () { isScribbleOn = true; isRectOn = isLineOn = false; }
+   bool isScribbleOn = true;
+
+   public void RectOn () { isRectOn = true; isScribbleOn = isLineOn = false; }
+   bool isRectOn = false;
+
+   public void LineOn () { isLineOn = true; isRectOn = isScribbleOn = false; }
+   bool isLineOn = false;
 
    public void EnableEraser () => isEraserEnabled = true;
    bool isEraserEnabled = false;
@@ -32,40 +43,58 @@ public partial class CustomCanvas : Canvas {
    }
    bool isRed = false, isGreen = false, isYellow = false;
 
-   void SetPenColor () =>
-      mLine.Color = isEraserEnabled ? Background : isRed ? Brushes.Red
+   void SetPenColor (MyDrawing myDrawing) {
+      myDrawing.Color = isEraserEnabled ? Background : isRed ? Brushes.Red
                   : isGreen ? Brushes.Green : isYellow ? Brushes.Yellow : Brushes.White;
+   }
 
    protected override void OnRender (DrawingContext dc) {
       base.OnRender (dc);
 
       for (int i = 0; i < mDrawings.Count; i++) {
-         if (mDrawings[i] is MyLine line) {
-            for (int j = 0; j < line.Points.Count - 1; j++) {
-               Pen mPen = new (line.Color, 10);
-               Point start = new (line.Points[j].X, line.Points[j].Y);
-               Point end = new (line.Points[j + 1].X, line.Points[j + 1].Y);
+         Pen mPen = new (mDrawings[i].Color, 10);
+         if (mDrawings[i] is MyScribble scribble) {
+            for (int j = 0; j < scribble.Points.Count - 1; j++) {
+               Point start = new (scribble.Points[j].X, scribble.Points[j].Y);
+               Point end = new (scribble.Points[j + 1].X, scribble.Points[j + 1].Y);
                dc.DrawLine (mPen, start, end);
             }
+         }
+         if (mDrawings[i] is MyRect myRect) {
+            var start = myRect.Points.start;
+            var end = myRect.Points.end;
+            Rect rectangle = new (new Point (start.X, start.Y), new Point (end.X, end.Y));
+            dc.DrawRectangle (Background, mPen, rectangle);
+         }
+         if (mDrawings[i] is MyLine line) {
+            var start = line.Points.start;
+            var end = line.Points.end;
+            dc.DrawLine (mPen, new (start.X, start.Y), new (end.X, end.Y));
          }
       }
    }
 
    protected override void OnMouseLeftButtonDown (MouseButtonEventArgs e) {
-      SetPenColor ();
       Point point = e.GetPosition (this);
-      mLine.Points.Add (new (point.X, point.Y));
+      if (isScribbleOn) { SetPenColor (mScribble); mScribble.Points.Add (new (point.X, point.Y)); return; }
+      if (isRectOn) { SetPenColor (mRect); mRect.Points.start = new (point.X, point.Y); }
+      if (isLineOn) { SetPenColor (mLine); mLine.Points.start = new (point.X, point.Y); }
    }
 
    protected override void OnMouseMove (MouseEventArgs e) {
       if (Mouse.LeftButton != MouseButtonState.Pressed) return;
       Point point = e.GetPosition (this);
-      mLine.Points.Add (new (point.X, point.Y));
+      if (isScribbleOn) mScribble.Points.Add (new (point.X, point.Y));
    }
 
    protected override void OnMouseLeftButtonUp (MouseButtonEventArgs e) {
-      mDrawings.Add (mLine);
-      mLine = new ();
+      if (isScribbleOn) {
+         mDrawings.Add (mScribble);
+         mScribble = new ();
+      }
+      Point point = e.GetPosition (this);
+      if (isRectOn) { mRect.Points.end = new (point.X, point.Y); mDrawings.Add (mRect); mRect = new (); }
+      if (isLineOn) { mLine.Points.end = new (point.X, point.Y); mDrawings.Add (mLine); mLine = new (); }
       InvalidateVisual ();
    }
 
@@ -104,9 +133,22 @@ public partial class CustomCanvas : Canvas {
       if (saveFile.ShowDialog () == true) {
          StreamWriter sw = new (saveFile.FileName, true);
          foreach (var drawing in mDrawings) {
-            if (drawing is MyLine line) {
-               sw.WriteLine ($"Scribble\n{line.Color}");
-               foreach (var point in line.Points) sw.WriteLine ($"{point.X},{point.Y}");
+            if (drawing is MyScribble scribble) {
+               sw.WriteLine ($"Scribble\n{scribble.Color}");
+               foreach (var point in scribble.Points) sw.WriteLine ($"{point.X},{point.Y}");
+               sw.WriteLine ();
+            }
+            else if (drawing is MyRect rect) {
+               sw.WriteLine ($"Rect\n{rect.Color}");
+               var start = rect.Points.start;
+               var end = rect.Points.end;
+               sw.WriteLine ($"{start.X},{start.Y}\n{end.X},{end.Y}");
+               sw.WriteLine ();
+            } else if (drawing is MyLine line) {
+               sw.WriteLine ($"Line\n{line.Color}");
+               var start = line.Points.start;
+               var end = line.Points.end;
+               sw.WriteLine ($"{start.X},{start.Y}\n{end.X},{end.Y}");
                sw.WriteLine ();
             }
          }
@@ -121,7 +163,9 @@ public partial class CustomCanvas : Canvas {
       };
       if (loadFile.ShowDialog () is true) {
          var fileName = loadFile.FileName;
-         MyLine scribble = new ();
+         MyScribble scribble = new ();
+         MyRect rect = new ();
+         MyLine myLine = new ();
          foreach (var line in File.ReadLines (fileName)) {
             if (line == "Scribble") { isScribble = true; continue; }
             if (isScribble) {
@@ -130,11 +174,27 @@ public partial class CustomCanvas : Canvas {
                var points = line.Split (',');
                scribble.Points.Add (new (double.Parse (points[0]), double.Parse (points[1])));
             }
+            if (line == "Rect") { isRect = true; continue; }
+            if (isRect) {
+               if (line == "") { isRect = false; mDrawings.Add (rect); rect = new (); continue; }
+               if (line[0] == '#') { rect.Color = (Brush)new BrushConverter ().ConvertFrom (line); rect.Thickness = 10; continue; }
+               var points = line.Split (',');
+               if (rect.Points.start == null) rect.Points.start = new (double.Parse (points[0]), double.Parse (points[1]));
+               else rect.Points.end = new (double.Parse (points[0]), double.Parse (points[1]));
+            }
+            if (line == "Line") { isLine = true; continue; }
+            if (isLine) {
+               if (line == "") { isLine = false; mDrawings.Add (myLine); myLine = new (); continue; }
+               if (line[0] == '#') { myLine.Color = (Brush)new BrushConverter ().ConvertFrom (line); myLine.Thickness = 10; continue; }
+               var points = line.Split (',');
+               if (myLine.Points.start == null) myLine.Points.start = new (double.Parse (points[0]), double.Parse (points[1]));
+               else myLine.Points.end = new (double.Parse (points[0]), double.Parse (points[1]));
+            }
          }
       }
       InvalidateVisual ();
    }
-   bool isScribble = false;
+   bool isScribble = false, isRect = false, isLine = false;
 
    public void SaveAsBin () {
       SaveFileDialog saveFile = new () {
@@ -144,19 +204,39 @@ public partial class CustomCanvas : Canvas {
       if (saveFile.ShowDialog () == true) {
          using (BinaryWriter bw = new (File.Create (saveFile.FileName))) {
             bw.Write (mDrawings.Count);
-            foreach (var drawing in mDrawings)
-               if (drawing is MyLine line) {
-                  SolidColorBrush sb = (SolidColorBrush)line.Color;
-                  bw.Write (sb.Color.A);
-                  bw.Write (sb.Color.R);
-                  bw.Write (sb.Color.G);
-                  bw.Write (sb.Color.B);
-                  bw.Write (line.Points.Count);
-                  foreach (var point in line.Points) {
+            foreach (var drawing in mDrawings) {
+               SolidColorBrush sb = (SolidColorBrush)drawing.Color;
+               bw.Write (sb.Color.A);
+               bw.Write (sb.Color.R);
+               bw.Write (sb.Color.G);
+               bw.Write (sb.Color.B);
+               if (drawing is MyScribble scribble) {
+                  bw.Write (scribble.Rank);
+                  bw.Write (scribble.Points.Count);
+                  foreach (var point in scribble.Points) {
                      bw.Write (point.X);
                      bw.Write (point.Y);
                   }
                }
+               if (drawing is MyRect rect) {
+                  bw.Write (rect.Rank);
+                  var start = rect.Points.start;
+                  var end = rect.Points.end;
+                  bw.Write (start.X);
+                  bw.Write (start.Y);
+                  bw.Write (end.X);
+                  bw.Write (end.Y);
+               }
+               if (drawing is MyLine line) {
+                  bw.Write (line.Rank);
+                  var start = line.Points.start;
+                  var end = line.Points.end;
+                  bw.Write (start.X);
+                  bw.Write (start.Y);
+                  bw.Write (end.X);
+                  bw.Write (end.Y);
+               }
+            }
          }
       }
    }
@@ -170,21 +250,34 @@ public partial class CustomCanvas : Canvas {
          using (BinaryReader br = new (File.Open (loadFile.FileName, FileMode.Open))) {
             var drawingCount = br.ReadInt32 ();
             for (int i = 0; i < drawingCount; i++) {
-               MyLine scribble = new ();
-               var a = br.ReadByte ();
-               var r = br.ReadByte ();
-               var g = br.ReadByte ();
-               var b = br.ReadByte ();
-               scribble.Color = new SolidColorBrush (Color.FromArgb (a, r, g, b));
-               var pointCount = br.ReadInt32 ();
-               for (int j = 0; j < pointCount; j++)
-                  scribble.Points.Add (new (br.ReadDouble (), br.ReadDouble ()));
-               mDrawings.Add (scribble);
+               byte a = br.ReadByte (), r = br.ReadByte (),
+                      g = br.ReadByte (), b = br.ReadByte ();
+               var rank = br.ReadInt32 ();
+               if (rank == 0) {
+                  MyScribble scribble = new () {
+                     Color = new SolidColorBrush (Color.FromArgb (a, r, g, b))
+                  };
+                  var pointCount = br.ReadInt32 ();
+                  for (int j = 0; j < pointCount; j++)
+                     scribble.Points.Add (new (br.ReadDouble (), br.ReadDouble ()));
+                  mDrawings.Add (scribble);
+               } else if (rank == 2) {
+                  MyRect rect = new () {
+                     Color = new SolidColorBrush (Color.FromArgb (a, r, g, b)),
+                     Points = (new (br.ReadDouble (), br.ReadDouble ()), new (br.ReadDouble (), br.ReadDouble ()))
+                  };
+                  mDrawings.Add (rect);
+               } else if (rank == 1) {
+                  MyLine line = new () {
+                     Color = new SolidColorBrush (Color.FromArgb (a, r, g, b)),
+                     Points = (new (br.ReadDouble (), br.ReadDouble ()), new (br.ReadDouble (), br.ReadDouble ()))
+                  };
+                  mDrawings.Add (line);
+               }
             }
          }
       }
       InvalidateVisual ();
-      //mDrawings.Clear ();
    }
 }
 public enum EColor { White, Red, Green, Yellow }

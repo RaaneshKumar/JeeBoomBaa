@@ -23,23 +23,30 @@ namespace JeeBoomBaa {
       public MainWindow () => InitializeComponent ();
       public CustomCanvas MyCanvas => mCanvas;
 
-
       void Clear_Click (object sender, RoutedEventArgs e) => mCanvas.ClearPoints ();
+
       void SaveAsText_Click (object sender, RoutedEventArgs e) => mCanvas.SaveAsText ();
-      void SaveAsBin_Click (object sender, RoutedEventArgs e) {
-         mCanvas.SaveAsBin ();
-      }
+
+      void SaveAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.SaveAsBin ();
+
       void LoadAsText_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsText ();
-      private void LoadAsBin_Click (object sender, RoutedEventArgs e) {
-         mCanvas.LoadAsBin ();
-      }
+
+      private void LoadAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsBin ();
+      
       void Eraser_Click (object sender, RoutedEventArgs e) => mCanvas.EnableEraser ();
 
       void Colors_Click (object sender, RoutedEventArgs e) {
          ColorSelection colorSelection = new () {Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
          colorSelection.Show ();
       }
+
       void Undo_Click (object sender, RoutedEventArgs e) => mCanvas.Undo ();
+
       void Redo_Click (object sender, RoutedEventArgs e) => mCanvas.Redo ();
-   }
+
+      private void Shapes_Click (object sender, RoutedEventArgs e) {
+         ShapeSelection shapeSelection = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+         shapeSelection.Show ();
+      }
+    }
 }

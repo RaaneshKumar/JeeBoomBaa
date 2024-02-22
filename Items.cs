@@ -11,7 +11,7 @@ namespace JeeBoomBaa {
    }
 
    public class MyPoint {
-      public MyPoint(double pX, double pY) { 
+      public MyPoint (double pX, double pY) {
          X = pX; Y = pY;
       }
 
@@ -19,22 +19,39 @@ namespace JeeBoomBaa {
          get => mX;
          set => mX = value;
       }
-      double mX;
+      double mX = double.NaN;
 
       public double Y {
          get => mY;
          set => mY = value;
       }
-      double mY;
+      double mY = double.NaN;
    }
+
    public class MyLine : MyDrawing {
-      public Brush Color { get; set; }
+      public int Rank => 1;
+
+      public double Thickness { get; set; }
+
+      public (MyPoint start, MyPoint end) Points = new ();
+   }
+
+   public class MyScribble : MyDrawing {
+      public int Rank => 0;
       public double Thickness { get; set; }
 
       public List<MyPoint> Points = new ();
    }
 
-   public class MyDrawing {
+   public class MyRect : MyDrawing {
+      public int Rank => 2;
 
+      public double Thickness { get; set; }
+
+      public (MyPoint start, MyPoint end) Points = new ();
+   }
+
+   public class MyDrawing {
+      public Brush Color { get; set; }
    }
 }

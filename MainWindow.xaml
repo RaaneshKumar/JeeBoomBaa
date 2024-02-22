@@ -29,22 +29,26 @@
             </MenuItem>
         </Menu>
         <StackPanel  Orientation="Horizontal" Grid.Row="1" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
-                    Width="120" Height="30">
-            <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Undo_Click">
+                    Width="150" Height="30">
+            <Button Background="White" Width="30" Height="30" Click="Undo_Click">
                 <Button.ToolTip>Undo</Button.ToolTip>
-                <Image Source="W:\JeeBoomBaa\Icons\undo.jpg" Height="20"/>
+                <Image Source="C:\Work\JeeBoomBaa\Icons\undo.jpg" Height="20"/>
             </Button>
-            <Button Background="White" HorizontalAlignment="Left"  Width="30" Height="30" Click="Eraser_Click">
+            <Button Background="White"  Width="30" Height="30" Click="Eraser_Click">
                 <Button.ToolTip>Eraser</Button.ToolTip>
-                <Image Source="W:\JeeBoomBaa\Icons\R.png"/>
+                <Image Source="C:\Work\JeeBoomBaa\Icons\R.png"/>
             </Button>
-            <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Colors_Click">
+            <Button Background="White"  Width="30" Height="30" Click="Colors_Click">
                 <Button.ToolTip>Color</Button.ToolTip>
-                <Image Source="W:\JeeBoomBaa\Icons\colors.png"/>
+                <Image Source="C:\Work\JeeBoomBaa\Icons\colors.png"/>
             </Button>
-            <Button Background="White" HorizontalAlignment="Right"  Width="30" Height="30" Click="Redo_Click">
+            <Button Background="White" Width="30" Height="30" Click="Shapes_Click">
+                <Button.ToolTip>Shapes</Button.ToolTip>
+                <Image Source="C:\Work\JeeBoomBaa\Icons\rect.jfif" Height="30"/>
+            </Button>
+            <Button Background="White" Width="30" Height="30" Click="Redo_Click">
                 <Button.ToolTip>Redo</Button.ToolTip>
-                <Image Source="W:\JeeBoomBaa\Icons\redo.jpg" Height = "20"/>
+                <Image Source="C:\Work\JeeBoomBaa\Icons\redo.jpg" Height = "20"/>
             </Button>
         </StackPanel>
     </Grid>
