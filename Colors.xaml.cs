@@ -21,7 +21,9 @@ namespace JeeBoomBaa {
       public ColorSelection () {
          InitializeComponent ();
       }
+
       public CustomCanvas OwnerCanvas => ((MainWindow)Owner).MyCanvas;
+
       void Red_Click (object sender, RoutedEventArgs e) {
          OwnerCanvas.EnableColor (Red);
          Close ();

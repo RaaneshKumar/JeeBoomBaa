@@ -23,17 +23,17 @@ namespace JeeBoomBaa {
 
       public CustomCanvas OwnerCanvas => ((MainWindow)Owner).MyCanvas;
 
-      private void Scribble_Click (object sender, RoutedEventArgs e) {
+      void Scribble_Click (object sender, RoutedEventArgs e) {
          OwnerCanvas.ScribbleOn ();
          Close ();
       }
 
-      private void Rectangle_Click (object sender, RoutedEventArgs e) {
+      void Rectangle_Click (object sender, RoutedEventArgs e) {
          OwnerCanvas.RectOn ();
          Close ();
       }
 
-      private void Line_Click (object sender, RoutedEventArgs e) {
+      void Line_Click (object sender, RoutedEventArgs e) {
          OwnerCanvas.LineOn ();
          Close ();
       }
