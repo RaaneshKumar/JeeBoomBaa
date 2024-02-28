@@ -32,11 +32,11 @@ namespace JeeBoomBaa {
       void LoadAsText_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsText ();
 
       private void LoadAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsBin ();
-      
-      void Eraser_Click (object sender, RoutedEventArgs e) => mCanvas.EnableEraser ();
+
+      void Eraser_Click (object sender, RoutedEventArgs e) { }
 
       void Colors_Click (object sender, RoutedEventArgs e) {
-         ColorSelection colorSelection = new () {Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+         ColorSelection colorSelection = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
          colorSelection.Show ();
       }
 
@@ -48,5 +48,7 @@ namespace JeeBoomBaa {
          ShapeSelection shapeSelection = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
          shapeSelection.Show ();
       }
-    }
+
+      protected override void OnKeyDown (KeyEventArgs e) => mCanvas.KeyPressed (e.Key);
+   }
 }

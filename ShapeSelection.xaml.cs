@@ -37,5 +37,10 @@ namespace JeeBoomBaa {
          OwnerCanvas.LineOn ();
          Close ();
       }
+
+      private void ConnectedLine_Click (object sender, RoutedEventArgs e) {
+         OwnerCanvas.ConnectedLineOn ();
+         Close ();
+      }
    }
 }

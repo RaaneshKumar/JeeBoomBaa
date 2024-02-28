@@ -21,6 +21,10 @@
                 <Button.ToolTip>Line</Button.ToolTip>
                 <Image Source="C:\Work\JeeBoomBaa\Icons\line.jpg" Height="20"/>
             </Button>
+            <Button Background="White" Width="30" Height="30" Click="ConnectedLine_Click">
+                <Button.ToolTip>Connected Line</Button.ToolTip>
+                <Image Source="C:\Work\JeeBoomBaa\Icons\connected line.png" />
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
