@@ -204,28 +204,10 @@ namespace JeeBoomBaa {
                   SolidColorBrush sb = (SolidColorBrush)drawing.MyBrush;
                   bw.Write (sb.Color.A); bw.Write (sb.Color.R);
                   bw.Write (sb.Color.G); bw.Write (sb.Color.B);
-                  switch (drawing) {
-                     case MyScribble scribble:
-                        bw.Write (scribble.Rank);
-                        bw.Write (scribble.PointList.Count);
-                        foreach (var point in scribble.PointList) {
-                           bw.Write (point.X); bw.Write (point.Y);
-                        }
-                        break;
-                     case MyLine line:
-                        bw.Write (line.Rank);
-                        MyPoint lStart = line.Points.start,
-                                lEnd = line.Points.end;
-                        bw.Write (lStart.X); bw.Write (lStart.Y);
-                        bw.Write (lEnd.X); bw.Write (lEnd.Y);
-                        break;
-                     case MyRect rect:
-                        bw.Write (rect.Rank);
-                        MyPoint rStart = rect.Points.start,
-                                rEnd = rect.Points.end;
-                        bw.Write (rStart.X); bw.Write (rStart.Y);
-                        bw.Write (rEnd.X); bw.Write (rEnd.Y);
-                        break;
+                  bw.Write (drawing.Rank);
+                  bw.Write (drawing.PointList.Count);
+                  foreach (var point in drawing.PointList) {
+                     bw.Write (point.X); bw.Write (point.Y);
                   }
                }
             }
@@ -240,35 +222,25 @@ namespace JeeBoomBaa {
          if (loadFile.ShowDialog () == true) {
             using (BinaryReader br = new (File.Open (loadFile.FileName, FileMode.Open))) {
                var drawingCount = br.ReadInt32 ();
+               MyDrawing drawing = new ();
                for (int i = 0; i < drawingCount; i++) {
                   byte a = br.ReadByte (), r = br.ReadByte (),
                          g = br.ReadByte (), b = br.ReadByte ();
-                  var rank = br.ReadInt32 ();
-                  switch (rank) {
+                  switch (br.ReadInt32 ()) { // Rank
                      case 0:
-                        MyScribble scribble = new () {
-                           MyBrush = new SolidColorBrush (Color.FromArgb (a, r, g, b))
-                        };
-                        var pointCount = br.ReadInt32 ();
-                        for (int j = 0; j < pointCount; j++)
-                           scribble.PointList.Add (new (br.ReadDouble (), br.ReadDouble ()));
-                        mDrawings.Add (scribble);
-                        break;
+                        drawing = new MyScribble (); break;
                      case 1:
-                        MyLine line = new () {
-                           MyBrush = new SolidColorBrush (Color.FromArgb (a, r, g, b)),
-                           Points = (new (br.ReadDouble (), br.ReadDouble ()), new (br.ReadDouble (), br.ReadDouble ()))
-                        };
-                        mDrawings.Add (line);
-                        break;
+                        drawing = new MyLine (); break;
                      case 2:
-                        MyRect rect = new () {
-                           MyBrush = new SolidColorBrush (Color.FromArgb (a, r, g, b)),
-                           Points = (new (br.ReadDouble (), br.ReadDouble ()), new (br.ReadDouble (), br.ReadDouble ()))
-                        };
-                        mDrawings.Add (rect);
-                        break;
+                        drawing = new MyRect (); break;
+                     case 3:
+                        drawing = new MyConnectedLine (); break;
                   }
+                  drawing.MyBrush = new SolidColorBrush (Color.FromArgb (a, r, g, b));
+                  var pointCount = br.ReadInt32 ();
+                  for (int j = 0; j < pointCount; j++)
+                     drawing.PointList.Add (new (br.ReadDouble (), br.ReadDouble ()));
+                  mDrawings.Add (drawing);
                }
             }
          }

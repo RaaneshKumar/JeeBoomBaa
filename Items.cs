@@ -29,7 +29,7 @@ namespace JeeBoomBaa {
    }
 
    public class MyLine : MyDrawing {
-      public int Rank => 1;
+      public override int Rank => 1;
 
       public double Thickness { get; set; }
 
@@ -40,7 +40,7 @@ namespace JeeBoomBaa {
    }
 
    public class MyConnectedLine : MyDrawing {
-      public int Rank => 3;
+      public override int Rank => 3;
       public double Thickness { get; set; }
 
       public override void Draw (DrawingContext dc) {
@@ -53,7 +53,7 @@ namespace JeeBoomBaa {
    }
 
    public class MyScribble : MyDrawing {
-      public int Rank => 0;
+      public override int Rank => 0;
       public double Thickness { get; set; }
 
       public override void Draw (DrawingContext dc) {
@@ -66,7 +66,7 @@ namespace JeeBoomBaa {
    }
 
    public class MyRect : MyDrawing {
-      public int Rank => 2;
+      public override int Rank => 2;
 
       public double Thickness { get; set; }
 
@@ -84,13 +84,13 @@ namespace JeeBoomBaa {
       }
       Brush mBrush;
 
+      public virtual int Rank => -1;
+
       public virtual void Draw (DrawingContext dc) { }
 
       public EShape Shape { get; set; }
 
       public List<MyPoint> PointList = new ();
-
-      public (MyPoint start, MyPoint end) Points = new ();
    }
 
    public enum EShape { SCRIBBLE, LINE, RECTANGLE, CONNECTEDLINE, }
