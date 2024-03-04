@@ -79,20 +79,10 @@ namespace JeeBoomBaa {
 
    public class MyDrawing {
       public Brush MyBrush {
-         get {
-            return Color switch {
-               Red => Brushes.Red,
-               Green => Brushes.Green,
-               Yellow => Brushes.Yellow,
-               _ => Brushes.White,
-            };
-            //return mBrush;
-         }
-         set => mBrush = value;
+         get => mBrush;
+         set => mBrush = value; 
       }
       Brush mBrush;
-
-      public EColor Color { get; set; }
 
       public virtual void Draw (DrawingContext dc) { }
 

@@ -15,29 +15,29 @@ using System.IO;
 namespace JeeBoomBaa {
    #region Classes --------------------------------------------------------------------------------
    public partial class CustomCanvas : Canvas {
-      EColor mColor = White;
-      MyDrawing mDrawing = new MyScribble { Shape = SCRIBBLE, Color = White };
+      Brush mBrush = Brushes.White;
+      MyDrawing mDrawing = new MyScribble { Shape = SCRIBBLE, MyBrush = Brushes.White };
       List<MyDrawing> mDrawings = new ();
       Stack<MyDrawing> mRedoItems = new ();
       Queue<MyDrawing> mClearUndo = new ();
 
       #region Functions ---------------------------------------------
-      public void ScribbleOn () { mDrawing = new MyScribble { Shape = SCRIBBLE, Color = mColor }; }
+      public void ScribbleOn () { mDrawing = new MyScribble { Shape = SCRIBBLE, MyBrush = mBrush }; }
 
-      public void RectOn () { mDrawing = new MyRect { Shape = RECTANGLE, Color = mColor }; }
+      public void RectOn () { mDrawing = new MyRect { Shape = RECTANGLE, MyBrush = mBrush }; }
 
-      public void LineOn () { mDrawing = new MyLine { Shape = LINE, Color = mColor }; }
+      public void LineOn () { mDrawing = new MyLine { Shape = LINE, MyBrush = mBrush }; }
 
-      public void ConnectedLineOn () { mDrawing = new MyConnectedLine { Shape = CONNECTEDLINE, Color = mColor }; }
+      public void ConnectedLineOn () { mDrawing = new MyConnectedLine { Shape = CONNECTEDLINE, MyBrush = mBrush }; }
 
       public void ChangeColor (EColor color) {
-         mColor = color switch {
-            Red => Red,
-            Green => Green,
-            Yellow => Yellow,
-            _ => White,
+         mBrush = color switch {
+            Red => Brushes.Red,
+            Green => Brushes.Green,
+            Yellow => Brushes.Yellow,
+            _ => Brushes.White,
          };
-         mDrawing.Color = mColor;
+         mDrawing.MyBrush = mBrush;
       }
 
       public void ClearPoints () {
@@ -108,20 +108,16 @@ namespace JeeBoomBaa {
          Point point = e.GetPosition (this);
          switch (mDrawing.Shape) {
             case SCRIBBLE:
-               mDrawing.PointList.Add (new (point.X, point.Y));
-               mDrawings[^1] = mDrawing;
+               if (mDrawing.PointList.Count > 0) {
+                  mDrawing.PointList.Add (new (point.X, point.Y));
+                  mDrawings[^1] = mDrawing;
+               }
                break;
-            case RECTANGLE:
-               mDrawing.PointList[^1] = new (point.X, point.Y);
-               mDrawings[^1] = mDrawing;
-               break;
-            case LINE:
-               mDrawing.PointList[^1] = new (point.X, point.Y);
-               mDrawings[^1] = mDrawing;
-               break;
-            case CONNECTEDLINE:
-               if (mDrawing.PointList.Count > 0)
-                  mDrawing.PointList[^1] = new (point.X, point.Y); mDrawings[^1] = mDrawing;
+            case RECTANGLE or LINE or CONNECTEDLINE:
+               if (mDrawing.PointList.Count > 0) {
+                  mDrawing.PointList[^1] = new (point.X, point.Y);
+                  mDrawings[^1] = mDrawing;
+               }
                break;
          }
          InvalidateVisual ();
@@ -132,17 +128,17 @@ namespace JeeBoomBaa {
          switch (mDrawing.Shape) {
             case SCRIBBLE:
                mDrawings[^1] = mDrawing;
-               mDrawing = new MyScribble { Shape = SCRIBBLE, Color = mColor };
+               mDrawing = new MyScribble { Shape = SCRIBBLE, MyBrush = mBrush };
                break;
             case RECTANGLE:
                mDrawing.PointList[^1] = new (point.X, point.Y);
                mDrawings[^1] = mDrawing;
-               mDrawing = new MyRect () { Shape = RECTANGLE, Color = mColor };
+               mDrawing = new MyRect () { Shape = RECTANGLE, MyBrush = mBrush };
                break;
             case LINE:
                mDrawing.PointList[^1] = new (point.X, point.Y);
                mDrawings[^1] = mDrawing;
-               mDrawing = new MyLine () { Shape = LINE, Color = mColor };
+               mDrawing = new MyLine () { Shape = LINE, MyBrush = mBrush };
                break;
          }
          InvalidateVisual ();
@@ -152,7 +148,7 @@ namespace JeeBoomBaa {
          if (mDrawing.Shape is CONNECTEDLINE && mDrawing.PointList.Count > 0 && k == Key.Escape) {
             mDrawing.PointList[^1] = mDrawing.PointList[^2];
             mDrawings[^1] = mDrawing;
-            mDrawing = new MyConnectedLine { Shape = CONNECTEDLINE, Color = mColor };
+            mDrawing = new MyConnectedLine { Shape = CONNECTEDLINE, MyBrush = mBrush };
          }
          InvalidateVisual ();
       }
@@ -183,49 +179,18 @@ namespace JeeBoomBaa {
          if (loadFile.ShowDialog () is true) {
             MyDrawing drawing = new ();
             foreach (var line in File.ReadLines (loadFile.FileName)) {
-               if (line == "SCRIBBLE") { isScribble = true; continue; }
-               if (line == "LINE") { isLine = true; continue; }
-               if (line == "RECTANGLE") { isRect = true; continue; }
-               if (isScribble) {
-                  if (line == "") { isScribble = false; mDrawings.Add (drawing); drawing = new (); continue; }
-                  if (line[0] == '#') {
-                     drawing = new MyScribble {
-                        MyBrush = (Brush)new BrushConverter ().ConvertFrom (line)
-                     };
-                     continue;
-                  }
-                  var points = line.Split (',');
-                  drawing.PointList.Add (new (double.Parse (points[0]), double.Parse (points[1])));
-               } else if (isRect) {
-                  if (line == "") { isRect = false; mDrawings.Add (drawing); drawing = new (); continue; }
-                  if (line[0] == '#') {
-                     drawing = new MyRect {
-                        MyBrush = (Brush)new BrushConverter ().ConvertFrom (line)
-                     };
-                     continue;
-                  }
-                  var points = line.Split (',');
-                  drawing.PointList.Add (new (double.Parse (points[0]), double.Parse (points[1])));
-                  //if (rect.Points.start == null) rect.Points.start = new (double.Parse (points[0]), double.Parse (points[1]));
-                  //else rect.Points.end = new (double.Parse (points[0]), double.Parse (points[1]));
-               } else if (isLine) {
-                  if (line == "") { isLine = false; mDrawings.Add (drawing); drawing = new (); continue; }
-                  if (line[0] == '#') {
-                     drawing = new MyLine {
-                        MyBrush = (Brush)new BrushConverter ().ConvertFrom (line)
-                     };
-                     continue;
-                  }
-                  var points = line.Split (',');
-                  drawing.PointList.Add (new (double.Parse (points[0]), double.Parse (points[1])));
-                  //if (myLine.Points.start == null) myLine.Points.start = new (double.Parse (points[0]), double.Parse (points[1]));
-                  //else myLine.Points.end = new (double.Parse (points[0]), double.Parse (points[1]));
-               }
+               if (line == "SCRIBBLE") { drawing = new MyScribble (); continue; }
+               if (line == "LINE") { drawing = new MyLine (); continue; }
+               if (line == "RECTANGLE") { drawing = new MyRect (); continue; }
+               if (line == "CONNECTEDLINE") { drawing = new MyConnectedLine (); continue; }
+               if (line == "") { mDrawings.Add (drawing); continue; }
+               if (line[0] == '#') { drawing.MyBrush = (Brush)new BrushConverter ().ConvertFrom (line); continue; }
+               var points = line.Split (',');
+               drawing.PointList.Add (new (double.Parse (points[0]), double.Parse (points[1])));
             }
          }
          InvalidateVisual ();
       }
-      bool isScribble = false, isRect = false, isLine = false;
 
       public void SaveAsBin () {
          SaveFileDialog saveFile = new () {
