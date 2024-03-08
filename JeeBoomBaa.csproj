@@ -9,6 +9,35 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Icons\colors.png" />
+    <None Remove="Icons\connected line.png" />
+    <None Remove="Icons\green.jpg" />
+    <None Remove="Icons\line.jpg" />
+    <None Remove="Icons\R.png" />
+    <None Remove="Icons\rect.jfif" />
+    <None Remove="Icons\red.jpg" />
+    <None Remove="Icons\redo.jpg" />
+    <None Remove="Icons\scribble.jfif" />
+    <None Remove="Icons\select.jfif" />
+    <None Remove="Icons\undo.jpg" />
+    <None Remove="Icons\white.jpg" />
+    <None Remove="Icons\yellow.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\colors.png" />
+    <Resource Include="Icons\connected line.png" />
+    <Resource Include="Icons\green.jpg" />
+    <Resource Include="Icons\line.jpg" />
+    <Resource Include="Icons\R.png" />
+    <Resource Include="Icons\rect.jfif" />
+    <Resource Include="Icons\red.jpg" />
+    <Resource Include="Icons\redo.jpg" />
+    <Resource Include="Icons\scribble.jfif" />
+    <Resource Include="Icons\select.jfif" />
+    <Resource Include="Icons\undo.jpg" />
+    <Resource Include="Icons\white.jpg" />
+    <Resource Include="Icons\yellow.jpg" />
   </ItemGroup>
 
 </Project>

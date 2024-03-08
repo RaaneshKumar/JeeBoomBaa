@@ -15,14 +15,17 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem Header="Save As" >
-                    <MenuItem Header="Text Document" Click="SaveAsText_Click"/>
-                    <MenuItem Header="Binary file" Click="SaveAsBin_Click"/>
-                </MenuItem>
+                <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" >
                     <MenuItem Header="Text Document" Click="LoadAsText_Click"/>
                     <MenuItem Header="Binary file" Click="LoadAsBin_Click"/>
                 </MenuItem>
+                <MenuItem Header="Save" Click="Save_Click"/>
+                <MenuItem Header="Save As" >
+                    <MenuItem Header="Text Document" Click="SaveAsText_Click"/>
+                    <MenuItem Header="Binary file" Click="SaveAsBin_Click"/>
+                </MenuItem>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Clear" Click="Clear_Click"/>
@@ -32,23 +35,23 @@
                     Width="150" Height="30">
             <Button Background="White" Width="30" Height="30" Click="Undo_Click">
                 <Button.ToolTip>Undo</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\undo.jpg" Height="20"/>
+                <Image Source="/Icons/Undo.jpg" Height="20"/>
             </Button>
-            <Button Background="White"  Width="30" Height="30" Click="Eraser_Click">
-                <Button.ToolTip>Eraser</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\R.png"/>
+            <Button Background="White"  Width="30" Height="30" Click="Select_Click">
+                <Button.ToolTip>Select</Button.ToolTip>
+                <Image Source="/Icons/select.jfif" Height="40"/>
             </Button>
             <Button Background="White"  Width="30" Height="30" Click="Colors_Click">
                 <Button.ToolTip>Color</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\colors.png"/>
+                <Image Source="\Icons\colors.png"/>
             </Button>
             <Button Background="White" Width="30" Height="30" Click="Shapes_Click">
                 <Button.ToolTip>Shapes</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\rect.jfif" Height="30"/>
+                <Image Source="\Icons\rect.jfif" Height="30"/>
             </Button>
             <Button Background="White" Width="30" Height="30" Click="Redo_Click">
                 <Button.ToolTip>Redo</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\redo.jpg" Height = "20"/>
+                <Image Source="\Icons\redo.jpg" Height = "20"/>
             </Button>
         </StackPanel>
     </Grid>

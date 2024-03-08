@@ -1,4 +1,4 @@
-﻿<Window x:Class="JeeBoomBaa.ShapeSelection"
+﻿<Window x:Class="JeeBoomBaa.Shapes"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,19 +11,19 @@
     Width="120" Height="30">
             <Button Background="White" Width="30" Height="30" Click="Scribble_Click">
                 <Button.ToolTip>Scribble</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\scribble.jfif"/>
+                <Image Source="\Icons\scribble.jfif"/>
             </Button>
             <Button Background="White" Width="30" Height="30" Click="Rectangle_Click">
                 <Button.ToolTip>Rectangle</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\rect.jfif"/>
+                <Image Source="\Icons\rect.jfif"/>
             </Button>
             <Button Background="White" Width="30" Height="30" Click="Line_Click">
                 <Button.ToolTip>Line</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\line.jpg" Height="20"/>
+                <Image Source="\Icons\line.jpg" Height="20"/>
             </Button>
             <Button Background="White" Width="30" Height="30" Click="ConnectedLine_Click">
                 <Button.ToolTip>Connected Line</Button.ToolTip>
-                <Image Source="C:\Work\JeeBoomBaa\Icons\connected line.png" />
+                <Image Source="\Icons\connected line.png" />
             </Button>
         </StackPanel>
     </Grid>

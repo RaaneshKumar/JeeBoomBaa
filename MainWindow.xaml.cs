@@ -1,26 +1,12 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Input.StylusPlugIns;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace JeeBoomBaa {
    public partial class MainWindow : Window {
-      public MainWindow () => InitializeComponent ();
+      public MainWindow () {
+         InitializeComponent ();
+      }
+
       public CustomCanvas MyCanvas => mCanvas;
 
       void Clear_Click (object sender, RoutedEventArgs e) => mCanvas.ClearPoints ();
@@ -31,9 +17,9 @@ namespace JeeBoomBaa {
 
       void LoadAsText_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsText ();
 
-      private void LoadAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsBin ();
+      void LoadAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsBin ();
 
-      void Eraser_Click (object sender, RoutedEventArgs e) { }
+      void Select_Click (object sender, RoutedEventArgs e) { }
 
       void Colors_Click (object sender, RoutedEventArgs e) {
          ColorSelection colorSelection = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
@@ -44,11 +30,24 @@ namespace JeeBoomBaa {
 
       void Redo_Click (object sender, RoutedEventArgs e) => mCanvas.Redo ();
 
-      private void Shapes_Click (object sender, RoutedEventArgs e) {
-         ShapeSelection shapeSelection = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+      void Shapes_Click (object sender, RoutedEventArgs e) {
+         Shapes shapeSelection = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
          shapeSelection.Show ();
       }
 
       protected override void OnKeyDown (KeyEventArgs e) => mCanvas.KeyPressed (e.Key);
+
+      void New_Click (object sender, RoutedEventArgs e) {
+         MainWindow mainWindow2 = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.Manual };
+         mainWindow2.Show ();
+      }
+
+      void Save_Click (object sender, RoutedEventArgs e) {
+
+      }
+
+      void Exit_Click (object sender, RoutedEventArgs e) {
+
+      }
    }
 }
