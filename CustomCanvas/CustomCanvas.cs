@@ -8,17 +8,14 @@ using System.IO;
 namespace JeeBoomBaa {
    #region Custom Canvas --------------------------------------------------------------------------
    public partial class CustomCanvas : Canvas {
-      #region Constructors ------------------------------------------
-      public CustomCanvas () {
-         mDocManager = new (this);
-      }
-      DocManager mDocManager;
-      #endregion
 
       #region Properties --------------------------------------------
       public DocManager DocManager => mDocManager;
 
-      public List<MyDrawing> Drawings => mDrawings;
+      public List<MyDrawing> Drawings {
+         get => mDrawings;
+         set { }
+      }
       #endregion
 
       #region Methods -----------------------------------------------
@@ -80,6 +77,7 @@ namespace JeeBoomBaa {
       List<MyDrawing> mDrawings = new ();
       protected Stack<MyDrawing> mRedoItems = new ();
       Queue<MyDrawing> mClearUndo = new ();
+      DocManager mDocManager = new ();
       #endregion
    }
    #endregion

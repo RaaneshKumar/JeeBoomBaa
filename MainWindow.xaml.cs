@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Collections.Generic;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace JeeBoomBaa {
    public partial class MainWindow : Window {
@@ -13,11 +16,14 @@ namespace JeeBoomBaa {
       void Clear_Click (object sender, RoutedEventArgs e) => mCanvas.ClearDrawings ();
 
       void SaveAsBin_Click (object sender, RoutedEventArgs e) {
-         mCanvas.DocManager.SaveFile ();
+         mCanvas.DocManager.SaveFile (mCanvas.Drawings);
       }
 
       void LoadAsBin_Click (object sender, RoutedEventArgs e) {
-         mCanvas.DocManager.OpenFile ();
+         mCanvas.ClearData ();
+         mCanvas.DocManager.OpenFile (out List<MyDrawing> drawings);
+         for (int i = 0; i < drawings.Count; i++) mCanvas.Drawings.Add (drawings[i]);
+         mCanvas.InvalidateVisual ();
       }
 
       void Select_Click (object sender, RoutedEventArgs e) { throw new NotImplementedException (); }
