@@ -8,6 +8,19 @@ using System.IO;
 namespace JeeBoomBaa {
    #region Custom Canvas --------------------------------------------------------------------------
    public partial class CustomCanvas : Canvas {
+      #region Constructors ------------------------------------------
+      public CustomCanvas () {
+         mDocManager = new (this);
+      }
+      DocManager mDocManager;
+      #endregion
+
+      #region Properties --------------------------------------------
+      public DocManager DocManager => mDocManager;
+
+      public List<MyDrawing> Drawings => mDrawings;
+      #endregion
+
       #region Methods -----------------------------------------------
       public void ScribbleOn () => mDrawing = new MyScribble { Shape = SCRIBBLE, MyBrushColor = mBrush };
 
@@ -22,7 +35,7 @@ namespace JeeBoomBaa {
          mDrawing.MyBrushColor = mBrush;
       }
 
-      public void ClearPoints () {
+      public void ClearDrawings () {
          foreach (var drawing in mDrawings)
             mClearUndo.Enqueue (drawing);
          mDrawings.Clear ();
@@ -38,7 +51,7 @@ namespace JeeBoomBaa {
          }
          // Implementing undo for each drawing
          var count = mDrawings.Count;
-         if ((isLoaded && count == loadCount) || count == 0) return;
+         if ((mDocManager.IsLoadedFile (out int loadCount) && loadCount == count) || count == 0) return;
          mRedoItems.Push (mDrawings[^1]);
          mDrawings.RemoveAt (mDrawings.Count - 1);
          InvalidateVisual ();
@@ -56,37 +69,9 @@ namespace JeeBoomBaa {
          InvalidateVisual ();
       }
 
-      public void SaveAsBin () {
-         SaveFileDialog saveFile = new () {
-            DefaultExt = "*.bin",
-            Filter = "Binary Document (*.bin)|*.bin|All (*.*)|*"
-         };
-         if (saveFile.ShowDialog () == true) {
-            using (BinaryWriter bw = new (File.Create (saveFile.FileName))) {
-               bw.Write (mDrawings.Count);
-               foreach (var drawing in mDrawings) drawing.SaveAsBin (bw);
-            }
-         }
-      }
-
-      public void LoadAsBin () {
+      public void ClearData () {
          mDrawings.Clear (); mRedoItems.Clear (); mClearUndo.Clear ();
-         OpenFileDialog loadFile = new () {
-            Filter = "Binary Document (*.bin)|*.bin|All (*.*)|*"
-         };
-         if (loadFile.ShowDialog () == true) {
-            using (BinaryReader br = new (File.Open (loadFile.FileName, FileMode.Open))) {
-               var drawingCount = br.ReadInt32 ();
-               MyDrawing drawing = new ();
-               for (int i = 0; i < drawingCount; i++) mDrawings.Add (drawing.LoadBin (br));
-            }
-         }
-         InvalidateVisual ();
-         isLoaded = true;
-         loadCount = mDrawings.Count;
       }
-      bool isLoaded = false; // To keep track of new file or loaded file
-      int loadCount; // To keep track of drawings count in the loaded file
       #endregion
 
       #region Private -----------------------------------------------

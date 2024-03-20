@@ -4,7 +4,7 @@ using static JeeBoomBaa.EColor;
 
 namespace JeeBoomBaa {
    #region Drawing Generator ----------------------------------------------------------------------
-   internal class DrawingGenerator {
+   public class DrawingGenerator {
       #region Constructors ------------------------------------------
       public DrawingGenerator (DrawingContext dc) {
          mDC = dc;

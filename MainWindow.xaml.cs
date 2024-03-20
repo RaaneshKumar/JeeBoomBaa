@@ -10,11 +10,15 @@ namespace JeeBoomBaa {
 
       public CustomCanvas MyCanvas => mCanvas;
 
-      void Clear_Click (object sender, RoutedEventArgs e) => mCanvas.ClearPoints ();
+      void Clear_Click (object sender, RoutedEventArgs e) => mCanvas.ClearDrawings ();
 
-      void SaveAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.SaveAsBin ();
+      void SaveAsBin_Click (object sender, RoutedEventArgs e) {
+         mCanvas.DocManager.SaveFile ();
+      }
 
-      void LoadAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsBin ();
+      void LoadAsBin_Click (object sender, RoutedEventArgs e) {
+         mCanvas.DocManager.OpenFile ();
+      }
 
       void Select_Click (object sender, RoutedEventArgs e) { throw new NotImplementedException (); }
 
