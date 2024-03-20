@@ -5,23 +5,26 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Backend\**" />
+    <Compile Remove="Elements\**" />
+    <EmbeddedResource Remove="Backend\**" />
+    <EmbeddedResource Remove="Elements\**" />
+    <None Remove="Backend\**" />
+    <None Remove="Elements\**" />
+    <Page Remove="Backend\**" />
+    <Page Remove="Elements\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="Icons\colors.png" />
-    <None Remove="Icons\connected line.png" />
-    <None Remove="Icons\green.jpg" />
-    <None Remove="Icons\line.jpg" />
-    <None Remove="Icons\R.png" />
-    <None Remove="Icons\rect.jfif" />
-    <None Remove="Icons\red.jpg" />
-    <None Remove="Icons\redo.jpg" />
-    <None Remove="Icons\scribble.jfif" />
-    <None Remove="Icons\select.jfif" />
-    <None Remove="Icons\undo.jpg" />
-    <None Remove="Icons\white.jpg" />
-    <None Remove="Icons\yellow.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Elements\Elements.csproj" />
   </ItemGroup>
 
   <ItemGroup>

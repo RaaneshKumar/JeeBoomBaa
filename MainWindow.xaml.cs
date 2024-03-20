@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace JeeBoomBaa {
@@ -11,15 +12,11 @@ namespace JeeBoomBaa {
 
       void Clear_Click (object sender, RoutedEventArgs e) => mCanvas.ClearPoints ();
 
-      void SaveAsText_Click (object sender, RoutedEventArgs e) => mCanvas.SaveAsText ();
-
       void SaveAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.SaveAsBin ();
-
-      void LoadAsText_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsText ();
 
       void LoadAsBin_Click (object sender, RoutedEventArgs e) => mCanvas.LoadAsBin ();
 
-      void Select_Click (object sender, RoutedEventArgs e) { }
+      void Select_Click (object sender, RoutedEventArgs e) { throw new NotImplementedException (); }
 
       void Colors_Click (object sender, RoutedEventArgs e) {
          ColorSelection colorSelection = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
@@ -37,17 +34,14 @@ namespace JeeBoomBaa {
 
       protected override void OnKeyDown (KeyEventArgs e) => mCanvas.KeyPressed (e.Key);
 
-      void New_Click (object sender, RoutedEventArgs e) {
-         MainWindow mainWindow2 = new () { Owner = this, WindowStartupLocation = WindowStartupLocation.Manual };
-         mainWindow2.Show ();
-      }
+      void New_Click (object sender, RoutedEventArgs e) => mCanvas.New ();
 
       void Save_Click (object sender, RoutedEventArgs e) {
-
+         throw new NotImplementedException ();
       }
 
       void Exit_Click (object sender, RoutedEventArgs e) {
-
+         throw new NotImplementedException ();
       }
    }
 }

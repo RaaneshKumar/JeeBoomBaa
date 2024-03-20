@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JeeBoomBaa", "JeeBoomBaa.csproj", "{7A071321-4E64-4997-91E0-5F33E9B596CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JeeBoomBaa", "JeeBoomBaa.csproj", "{7A071321-4E64-4997-91E0-5F33E9B596CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elements", "Elements\Elements.csproj", "{89200526-D737-4CAF-B56D-6CCFC4F2BE55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7A071321-4E64-4997-91E0-5F33E9B596CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A071321-4E64-4997-91E0-5F33E9B596CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A071321-4E64-4997-91E0-5F33E9B596CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89200526-D737-4CAF-B56D-6CCFC4F2BE55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89200526-D737-4CAF-B56D-6CCFC4F2BE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89200526-D737-4CAF-B56D-6CCFC4F2BE55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89200526-D737-4CAF-B56D-6CCFC4F2BE55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

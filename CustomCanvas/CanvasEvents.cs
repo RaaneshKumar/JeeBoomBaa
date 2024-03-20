@@ -10,12 +10,13 @@ namespace JeeBoomBaa {
       #region Implementation ----------------------------------------
       protected override void OnRender (DrawingContext dc) {
          base.OnRender (dc);
-         for (int i = 0; i < mDrawings.Count; i++) mDrawings[i].Draw (dc);
-         if (mDrawing.PointList.Count != 0) mDrawing.Draw (dc);
+         DrawingGenerator dg = new (dc);
+         for (int i = 0; i < mDrawings.Count; i++) dg.Draw (mDrawings[i]);
+         if (mDrawing.PointList.Count != 0) dg.Draw (mDrawing);
       }
       #endregion
 
-      #region Event Handling ----------------------------------------
+      #region Mouse Events ------------------------------------------
       protected override void OnMouseLeftButtonDown (MouseButtonEventArgs e) {
          mRedoItems.Clear ();
          Point point = e.GetPosition (this);
@@ -24,12 +25,12 @@ namespace JeeBoomBaa {
                mDrawing.PointList.Add (new (point.X, point.Y));
                break;
             case RECTANGLE or LINE:
-               mDrawing.PointList.Add (new (point.X, point.Y));
-               mDrawing.PointList.Add (new (point.X, point.Y));
+               for (int i = 0; i < 2; i++)
+                  mDrawing.PointList.Add (new (point.X, point.Y));
                break;
             case CONNECTEDLINE:
-               MyPoint pt = new (point.X, point.Y);
-               for (int i = 0; i < 2; i++) mDrawing.PointList.Add (pt);
+               for (int i = 0; i < 2; i++)
+                  mDrawing.PointList.Add (new (point.X, point.Y));
                break;
          }
       }
@@ -53,27 +54,29 @@ namespace JeeBoomBaa {
          switch (mDrawing.Shape) {
             case SCRIBBLE:
                mDrawings.Add (mDrawing);
-               mDrawing = new MyScribble { Shape = SCRIBBLE, MyBrush = mBrush };
+               mDrawing = new MyScribble { Shape = SCRIBBLE, MyBrushColor = mBrush };
                break;
             case RECTANGLE:
                mDrawing.PointList[^1] = new (point.X, point.Y);
                mDrawings.Add (mDrawing);
-               mDrawing = new MyRect () { Shape = RECTANGLE, MyBrush = mBrush };
+               mDrawing = new MyRect () { Shape = RECTANGLE, MyBrushColor = mBrush };
                break;
             case LINE:
                mDrawing.PointList[^1] = new (point.X, point.Y);
                mDrawings.Add (mDrawing);
-               mDrawing = new MyLine () { Shape = LINE, MyBrush = mBrush };
+               mDrawing = new MyLine () { Shape = LINE, MyBrushColor = mBrush };
                break;
          }
          InvalidateVisual ();
       }
+      #endregion
 
+      #region Keyboard Events ---------------------------------------
       public void KeyPressed (Key k) {
          if (mDrawing.Shape is CONNECTEDLINE && mDrawing.PointList.Count > 0 && k == Key.Escape) {
             mDrawing.PointList[^1] = mDrawing.PointList[^2];
             mDrawings.Add (mDrawing);
-            mDrawing = new MyConnectedLine { Shape = CONNECTEDLINE, MyBrush = mBrush };
+            mDrawing = new MyConnectedLine { Shape = CONNECTEDLINE, MyBrushColor = mBrush };
          }
          InvalidateVisual ();
       }

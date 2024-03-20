@@ -16,15 +16,9 @@
         <Menu Grid.Row="0">
             <MenuItem Header="File">
                 <MenuItem Header="New" Click="New_Click"/>
-                <MenuItem Header="Open" >
-                    <MenuItem Header="Text Document" Click="LoadAsText_Click"/>
-                    <MenuItem Header="Binary file" Click="LoadAsBin_Click"/>
-                </MenuItem>
+                <MenuItem Header="Open" Click="LoadAsBin_Click"/>
                 <MenuItem Header="Save" Click="Save_Click"/>
-                <MenuItem Header="Save As" >
-                    <MenuItem Header="Text Document" Click="SaveAsText_Click"/>
-                    <MenuItem Header="Binary file" Click="SaveAsBin_Click"/>
-                </MenuItem>
+                <MenuItem Header="Save As" Click="SaveAsBin_Click"/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Edit">
