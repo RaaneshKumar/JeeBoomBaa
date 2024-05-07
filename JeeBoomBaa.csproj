@@ -11,12 +11,16 @@
   <ItemGroup>
     <Compile Remove="Backend\**" />
     <Compile Remove="Elements\**" />
+    <Compile Remove="Properties\**" />
     <EmbeddedResource Remove="Backend\**" />
     <EmbeddedResource Remove="Elements\**" />
+    <EmbeddedResource Remove="Properties\**" />
     <None Remove="Backend\**" />
     <None Remove="Elements\**" />
+    <None Remove="Properties\**" />
     <Page Remove="Backend\**" />
     <Page Remove="Elements\**" />
+    <Page Remove="Properties\**" />
   </ItemGroup>
 
   <ItemGroup>

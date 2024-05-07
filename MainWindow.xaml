@@ -5,48 +5,91 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JeeBoomBaa"
         mc:Ignorable="d"
-        Title="JeeBoomBaa" Height="450" Width="800">
+        Title="JeeBoomBaa" Height="450" Width="800" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <local:CustomCanvas Grid.Row ="1" x:Name="mCanvas" Background="Black"/>
+        <local:CustomCanvas Grid.Row ="1" x:Name="mCanvas" Background="Transparent"/>
 
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem Header="New" Click="New_Click"/>
-                <MenuItem Header="Open" Click="LoadAsBin_Click"/>
-                <MenuItem Header="Save" Click="Save_Click"/>
-                <MenuItem Header="Save As" Click="SaveAsBin_Click"/>
-                <MenuItem Header="Exit" Click="Exit_Click"/>
-            </MenuItem>
-            <MenuItem Header="Edit">
-                <MenuItem Header="Clear" Click="Clear_Click"/>
+                <MenuItem Header="New" Click="OnNewClicked"/>
+                <MenuItem Header="Open" Click="OnLoadClicked"/>
+                <MenuItem Header="Save" Click="OnSaveClicked"/>
+                <MenuItem Header="Save As" Click="OnSaveAsClicked"/>
+                <MenuItem Header="Exit" Click="OnExitClicked"/>
             </MenuItem>
         </Menu>
-        <StackPanel  Orientation="Horizontal" Grid.Row="1" Background="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
-                    Width="150" Height="30">
-            <Button Background="White" Width="30" Height="30" Click="Undo_Click">
-                <Button.ToolTip>Undo</Button.ToolTip>
-                <Image Source="/Icons/Undo.jpg" Height="20"/>
-            </Button>
-            <Button Background="White"  Width="30" Height="30" Click="Select_Click">
-                <Button.ToolTip>Select</Button.ToolTip>
-                <Image Source="/Icons/select.jfif" Height="40"/>
-            </Button>
-            <Button Background="White"  Width="30" Height="30" Click="Colors_Click">
-                <Button.ToolTip>Color</Button.ToolTip>
-                <Image Source="\Icons\colors.png"/>
-            </Button>
-            <Button Background="White" Width="30" Height="30" Click="Shapes_Click">
-                <Button.ToolTip>Shapes</Button.ToolTip>
-                <Image Source="\Icons\rect.jfif" Height="30"/>
-            </Button>
-            <Button Background="White" Width="30" Height="30" Click="Redo_Click">
-                <Button.ToolTip>Redo</Button.ToolTip>
-                <Image Source="\Icons\redo.jpg" Height = "20"/>
-            </Button>
-        </StackPanel>
+        <DockPanel Grid.Row="1" DockPanel.Dock="Left" HorizontalAlignment="Left" Width="70" Background="DarkGray">
+            <Label Content="      Edit" HorizontalAlignment="Center" Width="70" Height="30" VerticalAlignment="Top"/>
+
+            <StackPanel Orientation="Horizontal" Width="70" Height="30" VerticalAlignment="Top" Margin="-70,30,0,0">
+                <Button Background="White" Width="35" Height="30" Click="OnUndoClicked">
+                    <Button.ToolTip>Undo</Button.ToolTip>
+                    <Image Source="/Icons/Undo.jpg" Height="20"/>
+                </Button>
+                <Button Background="White" Width="35" Height="30" Click="OnRedoClicked">
+                    <Button.ToolTip>Redo</Button.ToolTip>
+                    <Image Source="\Icons\redo.jpg" Height = "20"/>
+                </Button>
+            </StackPanel>
+
+            <Label Content="   Shapes" HorizontalAlignment="Center" Width="70" Height="30" VerticalAlignment="Top" Margin="-70,90,0,0"/>
+
+            <StackPanel Orientation="Horizontal" Width="70" Height="30" VerticalAlignment="Top" Margin="-70,120,0,0">
+                <Button x:Name="Scribble" Background="White" Width="35" Height="30" Click="OnShapeClicked">
+                    <Button.ToolTip>Scribble</Button.ToolTip>
+                    <Image Source="\Icons\scribble.jfif"/>
+                </Button>
+                <Button x:Name="Rectangle" Background="White" Width="35" Height="30" Click="OnShapeClicked">
+                    <Button.ToolTip>Rectangle</Button.ToolTip>
+                    <Image Source="\Icons\rect.jfif"/>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Width="70" Height="30" VerticalAlignment="Top" Margin="-70,150,0,0">
+                <Button x:Name="Line" Background="White" Width="35" Height="30" Click="OnShapeClicked">
+                    <Button.ToolTip>Line</Button.ToolTip>
+                    <Image Source="\Icons\line.jpg" Height="30"/>
+                </Button>
+                <Button x:Name="ConnectedLine" Background="White" Width="35" Height="30" Click="OnShapeClicked">
+                    <Button.ToolTip>Connected Line</Button.ToolTip>
+                    <Image Source="\Icons\connected line.png" />
+                </Button>
+            </StackPanel>
+
+            <Label Content="   Colors" HorizontalAlignment="Center" Width="70" Height="30" VerticalAlignment="Top" Margin="-70,210,0,0">
+
+            </Label>
+            <StackPanel Orientation="Horizontal" Width="70" Height="30" VerticalAlignment="Top" Margin="-70,240,0,0">
+                <Button Background="White" HorizontalAlignment="Left"  Width="35" Height="30" Click="OnBlackClicked">
+                    <Button.ToolTip>White</Button.ToolTip>
+                    <Image Source="\Icons\white.jpg"/>
+                </Button>
+                <Button Background="White" Width="35" Height="30" Click="OnRedClicked">
+                    <Button.ToolTip>Red</Button.ToolTip>
+                    <Image Source="\Icons\red.jpg"/>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Width="70" Height="30" VerticalAlignment="Top" Margin="-70,270,0,0">
+                <Button Background="White" Width="35" Height="30" Click="OnGreenClicked">
+                    <Button.ToolTip>Green</Button.ToolTip>
+                    <Image Source="\Icons\green.jpg" Height="21"/>
+                </Button>
+                <Button Background="White" Width="35" Height="30" Click="OnYellowClicked">
+                    <Button.ToolTip>Yellow</Button.ToolTip>
+                    <Image Source="\Icons\yellow.jpg" Height="17"/>
+                </Button>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel Grid.Row="1" DockPanel.Dock="Top" Height="20" VerticalAlignment="Top" Margin="70,0,0,0" Background="AliceBlue">
+            <TextBlock x:Name="mPromptMsg" VerticalAlignment="Top" Height="20" FontSize="15" Margin="10,0,0,0"/>
+        </DockPanel>
+        <DockPanel Grid.Row="1" DockPanel.Dock="Bottom" Height="30" VerticalAlignment="Bottom" Margin="70,0,0,0" Background="LightGray">
+            <StackPanel Orientation="Horizontal" x:Name="mPromptData" VerticalAlignment="Center" Height="25" Margin= "10,0,0,0">
+
+            </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

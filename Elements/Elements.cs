@@ -1,10 +1,10 @@
 ﻿using static JeeBoomBaa.EColor;
 
 namespace JeeBoomBaa {
-   #region Elements -------------------------------------------------------------------------------
-   public struct MyPoint {
+   #region Structs --------------------------------------------------------------------------------
+   public struct Point {
       #region Constructors ------------------------------------------
-      public MyPoint (double pX, double pY) {
+      public Point (double pX, double pY) {
          X = pX; Y = pY;
       }
       #endregion
@@ -18,8 +18,8 @@ namespace JeeBoomBaa {
       #region Methods -----------------------------------------------
       public override bool Equals (object? obj) {
          if (obj == null) return false;
-         if (obj is not MyPoint) return false;
-         var other = (MyPoint)obj;
+         if (obj is not Point) return false;
+         var other = (Point)obj;
          if (X == other.X && Y == other.Y) return true;
          return false;
       }
@@ -27,25 +27,43 @@ namespace JeeBoomBaa {
       public override readonly int GetHashCode () => base.GetHashCode ();
       #endregion
    }
+   #endregion
 
-   public class MyDrawing {
+   #region Interfaces -----------------------------------------------------------------------------
+   public interface IDrawable {
+      void DrawLine (Line line);
+
+      void DrawRect (Rectangle rect);
+
+      void DrawConLine (ConnectedLine conLine);
+   }
+   #endregion
+
+   #region Classes --------------------------------------------------------------------------------
+   public class Drawing {
+      public List<Shape> ShapeList = new ();
+   }
+
+   public abstract class Shape {
       #region Implementation ----------------------------------------
       public EColor MyBrushColor {
          get => mBrush;
          set => mBrush = value;
       }
-      EColor mBrush = White;
+      EColor mBrush = Black;
 
-      public virtual int Rank => -1;
+      public EShape Name { get; set; }
 
-      public EShape Shape { get; set; }
+      public List<Point> PointList = new ();
 
-      public List<MyPoint> PointList = new ();
+      public bool Exists => PointList.Count > 0;
       #endregion
 
       #region Methods -----------------------------------------------
+      public abstract void Draw (IDrawable shape);
+
       public virtual void SaveAsBin (BinaryWriter bw) {
-         bw.Write (Rank);
+         bw.Write (Name.ToString ());
          bw.Write (MyBrushColor.ToString ());
          bw.Write (PointList.Count);
          foreach (var point in PointList) {
@@ -53,30 +71,32 @@ namespace JeeBoomBaa {
          }
       }
 
-      public virtual MyDrawing LoadBin (BinaryReader br) {
-         MyDrawing drawing = br.ReadInt32 () switch { // Rank
-            0 => new MyScribble (),
-            1 => new MyLine (),
-            2 => new MyRect (),
-            _ => new MyConnectedLine ()
+      public virtual Shape LoadBin (BinaryReader br) {
+         Shape shape = br.ReadString () switch { // Rank
+            "SCRIBBLE" => new Scribble (),
+            "LINE" => new Line (),
+            "RECTANGLE" => new Rectangle (),
+            _ => new ConnectedLine ()
          };
-         drawing.MyBrushColor = br.ReadString () switch {
+         shape.MyBrushColor = br.ReadString () switch {
             "Red" => Red,
             "Green" => Green,
             "Yellow" => Yellow,
-            _ => White
+            _ => Black
          };
 
          var pointCount = br.ReadInt32 ();
          for (int j = 0; j < pointCount; j++)
-            drawing.PointList.Add (new (br.ReadDouble (), br.ReadDouble ()));
-         return drawing;
+            shape.PointList.Add (new (br.ReadDouble (), br.ReadDouble ()));
+         return shape;
       }
       #endregion
    }
+   #endregion
 
+   #region Enums ----------------------------------------------------------------------------------
    public enum EShape { SCRIBBLE, LINE, RECTANGLE, CONNECTEDLINE }
 
-   public enum EColor { White, Red, Green, Yellow }
+   public enum EColor { Black, Red, Green, Yellow }
    #endregion
 }
