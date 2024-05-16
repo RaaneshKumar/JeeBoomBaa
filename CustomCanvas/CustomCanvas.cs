@@ -6,10 +6,35 @@ using Microsoft.Win32;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows;
 
 namespace JeeBoomBaa {
    #region Custom Canvas --------------------------------------------------------------------------
    public partial class CustomCanvas : Canvas {
+      #region Constructors ------------------------------------------
+      public CustomCanvas () {
+         Loaded += delegate {
+            var bound = new Bound (new (-10, -10), new (1000, 1000));
+            mProjXfm = Transform.ComputeZoomExtentsProjXfm (ActualWidth, ActualHeight, bound);
+            mInvProjXfm = mProjXfm; mInvProjXfm.Invert ();
+         };
+
+         MouseWheel += (sender, e) => {
+            double zoomFactor = 1.05;
+            if (e.Delta > 0) zoomFactor = 1 / zoomFactor;
+            var ptAt = mInvProjXfm.Transform (e.GetPosition (this)); // Point at which zoom is handled
+            // Actual visible drawing area
+            Point cornerA = mInvProjXfm.Transform (new Point (20, 20)),
+                  cornerB = mInvProjXfm.Transform (new Point (ActualWidth, ActualHeight));
+            var bound = new Bound (cornerA, cornerB);
+            bound = bound.Inflated (new (ptAt.X, ptAt.Y), zoomFactor);
+            mProjXfm = Transform.ComputeZoomExtentsProjXfm (ActualWidth, ActualHeight, bound);
+            mInvProjXfm = mProjXfm; mInvProjXfm.Invert ();
+            InvalidateVisual ();
+         };
+      }
+      #endregion
+
       #region Properties --------------------------------------------
       public MainWindow? Window { get; set; }
 
@@ -24,6 +49,10 @@ namespace JeeBoomBaa {
       public Stack<Shape> RedoItems => mRedoItems;
 
       public Widget Widget { get => mWidget!; set => mWidget = value; }
+
+      public Matrix Xfm { get => mProjXfm; set => mProjXfm = value; }
+
+      public Matrix InvXfm { get => mInvProjXfm; set => mInvProjXfm = value; }
       #endregion
 
       #region Methods -----------------------------------------------
@@ -68,7 +97,7 @@ namespace JeeBoomBaa {
       #region Implementation ----------------------------------------
       protected override void OnRender (DrawingContext dc) {
          base.OnRender (dc);
-         DrawingGenerator dg = new (dc);
+         DrawingGenerator dg = new (dc, mProjXfm);
          for (int i = 0; i < mDrawing.ShapeList.Count; i++) dg.Draw (mDrawing);
          if (mShape.Exists) dg.Draw (mShape);
       }
@@ -93,6 +122,7 @@ namespace JeeBoomBaa {
       Stack<Shape> mRedoItems = new ();
       DocManager mDocManager = new ();
       Widget? mWidget;
+      Matrix mProjXfm = Matrix.Identity, mInvProjXfm = Matrix.Identity;
       #endregion
    }
    #endregion

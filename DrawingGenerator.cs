@@ -7,8 +7,9 @@ namespace JeeBoomBaa {
    #region Drawing Generator ----------------------------------------------------------------------
    public class DrawingGenerator : IDrawable {
       #region Constructors ------------------------------------------
-      public DrawingGenerator (DrawingContext dc) {
+      public DrawingGenerator (DrawingContext dc, Matrix projXfm) {
          mDC = dc;
+         mXfm = projXfm;
       }
       DrawingContext mDC;
       #endregion
@@ -45,12 +46,12 @@ namespace JeeBoomBaa {
       }
 
       public void DrawLine (Line line) {
-         Point lStart = line.PointList[0], lEnd = line.PointList[^1];
-         mDC.DrawLine (new Pen (mBrush, 2), new System.Windows.Point (lStart.X, lStart.Y), new System.Windows.Point (lEnd.X, lEnd.Y));
+         PointLite lStart = line.PointList[0], lEnd = line.PointList[^1];
+         mDC.DrawLine (new Pen (mBrush, 2), mXfm.Transform (new Point (lStart.X, lStart.Y)), mXfm.Transform (new Point (lEnd.X, lEnd.Y)));
       }
 
       public void DrawRect (Rectangle rect) {
-         Point rStart = rect.PointList[0], rEnd = rect.PointList[^1];
+         PointLite rStart = rect.PointList[0], rEnd = rect.PointList[^1];
          Rect rectangle = new (new System.Windows.Point (rStart.X, rStart.Y), new System.Windows.Point (rEnd.X, rEnd.Y));
          mDC.DrawRectangle (Brushes.Transparent, new Pen (mBrush, 2), rectangle);
       }
@@ -64,6 +65,7 @@ namespace JeeBoomBaa {
       }
       #region Private ---------
       Brush? mBrush;
+      Matrix mXfm;
       #endregion
       #endregion
    }

@@ -2,9 +2,9 @@
 
 namespace JeeBoomBaa {
    #region Structs --------------------------------------------------------------------------------
-   public struct Point {
+   public struct PointLite {
       #region Constructors ------------------------------------------
-      public Point (double pX, double pY) {
+      public PointLite (double pX, double pY) {
          X = pX; Y = pY;
       }
       #endregion
@@ -18,8 +18,8 @@ namespace JeeBoomBaa {
       #region Methods -----------------------------------------------
       public override bool Equals (object? obj) {
          if (obj == null) return false;
-         if (obj is not Point) return false;
-         var other = (Point)obj;
+         if (obj is not PointLite) return false;
+         var other = (PointLite)obj;
          if (X == other.X && Y == other.Y) return true;
          return false;
       }
@@ -54,7 +54,7 @@ namespace JeeBoomBaa {
 
       public EShape Name { get; set; }
 
-      public List<Point> PointList = new ();
+      public List<PointLite> PointList = new ();
 
       public bool Exists => PointList.Count > 0;
       #endregion
